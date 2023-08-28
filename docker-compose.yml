@@ -1,0 +1,25 @@
+# menggunakan schema version 3.7
+version: "3.7"
+
+# mendefinisikan service
+services:
+  # service pertama yakni database untuk penyimpanan data item-app
+  item-db:
+    # menggunakan image mongo dengan tag 3 dari docker hub
+    image: mongo:3
+    # menggunakan volume app-db dan memasangnya pada directory /data/db
+    volumes:
+      - app-db:/data/db
+  # service kedua yakni aplikasi item-app itu sendiri
+  item-app:
+    # menggunakan image item-app dengan tag v1 hasil pembuatan image dari dockerfile
+    image: item-app:v1
+    # menerapkan restart policy agar container selalu restart ketika terhenti
+    command: sh -c "--restart=always"
+    # mengekspos port 80 untuk host dan container
+    ports:
+      - 80:80
+
+# membuat volume baru bernama app-db
+volumes:
+  app-db:
